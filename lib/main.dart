@@ -1,3 +1,5 @@
+import 'package:chatroom/home/Homescreen.dart';
+import 'package:chatroom/login/login_screen.dart';
 import 'package:chatroom/register/register_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +21,10 @@ class myapp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         RegisterScreen.routeName:(context)=>RegisterScreen(),
+        LoginScreen.routeName:(context)=>LoginScreen(),
+        Homescreen.routeName:(context)=>Homescreen(),
       },
-      initialRoute: RegisterScreen.routeName,
+      initialRoute: LoginScreen.routeName,
     );
   }
 }

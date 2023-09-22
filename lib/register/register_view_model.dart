@@ -17,6 +17,7 @@ void registerFirebaseAuth(String email,String password) async
     );
     registerNavigator.hideloading();
     registerNavigator.showmessage('register succesfull!');
+    registerNavigator.gotohomescreen();
   } on FirebaseAuthException catch (e) {
     if (e.code == FirebaseErros.weakpassword) {
       registerNavigator.hideloading();
