@@ -190,7 +190,7 @@ color: Colors.white,
   void validateForm() async {
 if(formkey.currentState?.validate() == true)
   {
-   registerViewModel.registerFirebaseAuth(email.trim(), password);
+   registerViewModel.registerFirebaseAuth(email.trim(), password,firstname,lastname,username);
   }
 else{
   print('hamada');
