@@ -1,10 +1,12 @@
 import 'package:chatroom/database/database_utils.dart';
 import 'package:chatroom/model/myUsers.dart';
-import 'package:chatroom/register/register_navigator.dart';
+
+import 'package:chatroom/ui/register/register_navigator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../errors/firebaseerrors.dart';
+import '../../errors/firebaseerrors.dart';
+
 
 class RegisterViewModel extends ChangeNotifier{
   late RegisterNavigator registerNavigator;
@@ -27,7 +29,7 @@ void registerFirebaseAuth(String email,String password,String firstname,String l
      var datauser = await Databaseutils.registeruser(user);
     registerNavigator.hideloading();
     registerNavigator.showmessage('register succesfull!');
-    registerNavigator.gotohomescreen();
+    registerNavigator.gotohomescreen(user);
   } on FirebaseAuthException catch (e) {
     if (e.code == FirebaseErros.weakpassword) {
       registerNavigator.hideloading();

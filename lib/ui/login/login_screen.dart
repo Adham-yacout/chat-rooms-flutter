@@ -1,13 +1,17 @@
 import 'dart:async';
 
-import 'package:chatroom/home/Homescreen.dart';
-import 'package:chatroom/login/login_navigator.dart';
-import 'package:chatroom/login/login_view_model.dart';
-import 'package:chatroom/register/register_screen.dart';
+import 'package:chatroom/model/myUsers.dart';
+import 'package:chatroom/provider/userprovider.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chatroom/utils.dart' as Utils;
 import 'package:provider/provider.dart';
+
+import '../home/Homescreen.dart';
+import '../register/register_screen.dart';
+import 'login_navigator.dart';
+import 'login_view_model.dart';
 class LoginScreen extends StatefulWidget {
   static const String routeName='loginscreen';
   @override
@@ -133,7 +137,10 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
   }
 
   @override
-  void gotohomescreen() {
+  void gotohomescreen(MyUsers user) {
+
+    var userprovider=Provider.of<UserProvider>(context,listen: false);
+    userprovider.user=user;
     Timer(Duration(seconds: 1),(){
       Navigator.pushReplacementNamed(context, Homescreen.routeName);});
 

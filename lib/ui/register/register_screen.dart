@@ -1,14 +1,19 @@
 import 'dart:async';
 
 import 'package:chatroom/errors/firebaseerrors.dart';
-import 'package:chatroom/home/Homescreen.dart';
-import 'package:chatroom/register/register_navigator.dart';
-import 'package:chatroom/register/register_view_model.dart';
+
+import 'package:chatroom/model/myUsers.dart';
+import 'package:chatroom/provider/userprovider.dart';
+import 'package:chatroom/ui/register/register_navigator.dart';
+
+import 'package:chatroom/ui/register/register_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chatroom/utils.dart' as Utils;
 import 'package:provider/provider.dart';
+
+import '../home/Homescreen.dart';
 class RegisterScreen extends StatefulWidget {
   
 static const String routeName='registerscreen';
@@ -216,7 +221,9 @@ Utils.hideloading(context);
   }
 
   @override
-  void gotohomescreen() {
+  void gotohomescreen(MyUsers user) {
+  var userprovider=Provider.of<UserProvider>(context,listen:  false);
+  userprovider.user=user;
     Timer(Duration(seconds: 1 ),(){
       Navigator.pushReplacementNamed(context, Homescreen.routeName);});
   }

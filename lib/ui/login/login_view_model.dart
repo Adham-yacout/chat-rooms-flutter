@@ -1,8 +1,11 @@
 import 'package:chatroom/database/database_utils.dart';
 import 'package:chatroom/errors/firebaseerrors.dart';
-import 'package:chatroom/login/login_navigator.dart';
+
+import 'package:chatroom/model/myUsers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+
+import 'login_navigator.dart';
 
 class LoginViewModel extends ChangeNotifier{
   late LoginNavigator loginnavigator;
@@ -14,7 +17,7 @@ loginnavigator.showloading();
           password: password
       );
       //retrieve data
-    var userobj=Databaseutils.getUser(credential.user?.uid ?? '');
+    var userobj=await Databaseutils.getUser(credential.user?.uid ?? '') ;
     if(userobj==null)
       {
         loginnavigator.hideloading();
@@ -26,7 +29,7 @@ loginnavigator.showloading();
       //show message
       loginnavigator.showmessage("login succesfull");
       //navigation
-      loginnavigator.gotohomescreen();
+      loginnavigator.gotohomescreen(userobj);
     }
 
 
