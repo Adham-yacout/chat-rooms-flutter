@@ -16,6 +16,7 @@ void registerFirebaseAuth(String email,String password,String firstname,String l
 {
   registerNavigator.showloading();
   try {
+    //tries to create a user for authentication
     final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -26,6 +27,7 @@ void registerFirebaseAuth(String email,String password,String firstname,String l
         email: email,
         firstname: firstname,
         lastname: lastname);
+    //adds user data to firebase
      var datauser = await Databaseutils.registeruser(user);
     registerNavigator.hideloading();
     registerNavigator.showmessage('register succesfull!');

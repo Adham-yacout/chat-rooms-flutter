@@ -11,7 +11,9 @@ class LoginViewModel extends ChangeNotifier{
   late LoginNavigator loginnavigator;
   void loginfirebasauth(String email,String password) async {
     try {
+      //show loading
 loginnavigator.showloading();
+//fetch login data
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password

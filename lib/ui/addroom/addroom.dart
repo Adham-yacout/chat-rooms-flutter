@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:chatroom/model/Category.dart';
 import 'package:chatroom/ui/addroom/AddRoomNavigator.dart';
 import 'package:chatroom/ui/addroom/Addroomviewmodel.dart';
+import 'package:chatroom/ui/home/Homescreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:chatroom/utils.dart' as Utils;
 
 class Addroom extends StatefulWidget{
   static const String routeName='addroom';
@@ -67,6 +71,7 @@ boxShadow: [
               ),
 
               child: Form(
+                key: formkey ,
                 child: Column(
                   children: [
                     Text('Create New Room',style: TextStyle(
@@ -161,6 +166,33 @@ boxShadow: [
   void validateform() {
     if(formkey.currentState?.validate()==true){
       //add room
+      viewModel.addRoom(title, description, selecteditem!.id);
     }
+  }
+
+  @override
+  void hideloading() {
+   Utils.hideloading(context);
+  }
+
+  @override
+  void navigatetoHome() {
+    Timer(Duration(seconds: 1),(){
+    Navigator.pushReplacementNamed(context, Homescreen.routeName);
+    });
+
+  }
+
+  @override
+  void showloading() {
+    Utils.showloading(context);
+  }
+
+  @override
+  void showmessage(String message) {
+    Utils.showmessage(context, message, 'ok', (context){
+      Navigator.pop(context);
+
+    });
   }
 }
