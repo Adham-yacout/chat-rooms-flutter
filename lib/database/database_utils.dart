@@ -2,6 +2,7 @@ import 'package:chatroom/model/myUsers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../model/Rooms.dart';
+import '../model/message.dart';
 
 class Databaseutils {
 /*getusercollection() Function:
@@ -46,20 +47,53 @@ and the registeruser function adds or updates a a document in the collection wit
     var documentsnapshot = await getusercollection().doc(userId).get();
     return documentsnapshot.data();
   }
+
   //////////////////////////////////////////////////////////////////////////
-   //functions for rooms
+  //functions for rooms
   static CollectionReference<Rooms> getRoomcollection() {
     //collection is where we store this data
     return FirebaseFirestore.instance
         .collection(Rooms.collectionName)
         .withConverter<Rooms>(
-        fromFirestore: ((snapshot, options) =>
-            Rooms.fromJson(snapshot.data()!)),
-        toFirestore: (room, options) => room.toJson());
+            fromFirestore: ((snapshot, options) =>
+                Rooms.fromJson(snapshot.data()!)),
+            toFirestore: (room, options) => room.toJson());
   }
-  static Future<void> addRoomtofirestore(Rooms room) async{
-    var query= await getRoomcollection().doc();
-    room.Roomid=query.id;
+
+  static Future<void> addRoomtofirestore(Rooms room) async {
+    var query = await getRoomcollection().doc();
+    room.Roomid = query.id;
     return query.set(room);
+  }
+
+  static Stream<QuerySnapshot<Rooms>> getRooms() {
+    return getRoomcollection().snapshots();
+  }
+
+  ////functions used in chatrooms
+  static CollectionReference<Message> getMessageCollection(String roomid) {
+
+    return FirebaseFirestore.instance
+        .collection(Rooms.collectionName)
+        .doc(roomid)
+        .collection(Message.collectionName)
+        .withConverter<Message>(
+            fromFirestore: (snapshot, options) {
+              print('getmessage: ${snapshot.data()}');
+              return Message.fromJson(snapshot.data()!);
+            },
+            toFirestore: (message, options) => message.toJson());
+  }
+
+  static Future<void> insertmessage(Message message) async {
+    var messagecollection = getMessageCollection(message.roomId);
+    var docref = messagecollection.doc();
+    message.id = docref.id;
+    return docref.set(message);
+  }
+
+  static Stream<QuerySnapshot<Message>> getMessagesfromfirestore(
+      String roomid) {
+    return getMessageCollection(roomid).orderBy('dateTime').snapshots();
   }
 }
